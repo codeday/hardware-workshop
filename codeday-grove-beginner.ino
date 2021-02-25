@@ -7,17 +7,12 @@
 #include <Adafruit_NeoPixel.h> //Mech key, remove in final revisions
 #include <Arduino.h> //required for screen, idk what rn
 
-//Enables addon modules.
-#define mech_key
-
 //Board pin numbers and other variables
 char led = 4;
 char buzzer = 5;
 bool hatched = false; //to store if the egg has hatched
 int millis_since_press = 0;
-char button = 2;
-
-
+char button = 6;
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* clock=*/ SCL, /* data=*/ SDA, /* reset=*/ U8X8_PIN_NONE); 
 
 void drawSmallEgg(){
@@ -59,8 +54,4 @@ void setup() {
   u8g2.clearBuffer();
   u8g2.drawStr(10,41,"HATCHED UWU");
   u8g2.sendBuffer();
-}
-
-void loop() {
-  
 }
