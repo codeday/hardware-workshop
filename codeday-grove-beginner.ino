@@ -2,71 +2,65 @@
 //| Thanks to Digikey for providing the kits and helping us make this an amazing Codeday!|
 //#--------------------------------------------------------------------------------------#
 
-#include <U8g2lib.h>
-#include <Wire.h>
-#include <Adafruit_NeoPixel.h>
-#include <Arduino.h>
-#include "DS1307.h"
+#include <U8g2lib.h> //Library for the screen
+#include <Wire.h> //For I2C (How the display and board talk to each other)
+#include <Adafruit_NeoPixel.h> //Mech key, remove in final revisions
+#include <Arduino.h> //required for screen, idk what rn
 
-//Enables features.
+//Enables addon modules.
 #define mech_key
-char kit = "beginner"; //unused rn
 
 //Board pin numbers and other variables
 char led = 4;
 char buzzer = 5;
-int color = 0;
-int fadeSpeed = 5;
-int fadeInterval = 1;
+bool hatched = false; //to store if the egg has hatched
+int millis_since_press = 0;
+char button = 2;
 
 
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* clock=*/ SCL, /* data=*/ SDA, /* reset=*/ U8X8_PIN_NONE); 
 
-//A tiny bit of logic to enable certain modules
-#ifdef mech_key
-char button = 2;
-char pixel_pin = 3;
-Adafruit_NeoPixel pixel = Adafruit_NeoPixel(1, pixel_pin, NEO_GRB + NEO_KHZ800);
-#endif
-#ifndef mech_key
-char button = 6;
-#endif
+void drawSmallEgg(){
+  u8g2.clearBuffer(); //Clears the screen
+  u8g2.drawCircle(63,31,20); //sad excuse for an egg but works
+  u8g2.drawLine(0,0,0,63); //Makes a square around the screen
+  u8g2.drawLine(0,0,127,0);
+  u8g2.drawLine(127,0,127,63);
+  u8g2.drawLine(0,63,127,63);
+  u8g2.sendBuffer(); //Sends image to the screen
+  delay(750);
+}
+void drawBigEgg() {
+  u8g2.clearBuffer(); //Clears the screen
+  u8g2.drawCircle(63,31,15); //sad excuse for an egg but works
+  u8g2.drawLine(0,0,0,63); //Makes a square around the screen
+  u8g2.drawLine(0,0,127,0);
+  u8g2.drawLine(127,0,127,63);
+  u8g2.drawLine(0,63,127,63);
+  u8g2.sendBuffer(); //Sends image to screen
+  delay(750);
+}
 
 void setup() {
-  u8g2.begin();
-  #ifdef mech_key
-  pinMode(button, INPUT);
-  pixel.begin();
-  pixel.clear();
-  pixel.setPixelColor(0,pixel.Color(255,0,255));
-  pixel.show();
-  #endif
-  u8g2.clearBuffer(); 
-  u8g2.setFont(u8g2_font_ncenB08_tr);
+  u8g2.begin(); //Tells the screen to start
+  u8g2.clearBuffer(); //Clears the screen
+  u8g2.setFont(u8g2_font_ncenB08_tr); //Sets the font the screen uses
+  while (digitalRead(button) == LOW) {
+    u8g2.clearBuffer(); //Clears the screen
+    u8g2.drawStr(30,20,"JojiGotchi"); //Title screen
+    u8g2.drawStr(25,45,"Press Any Button");
+    u8g2.sendBuffer();
+  }
+  millis_since_press = millis();
+  while (millis() - millis_since_press <= 300000) { //checks if hatching time is less than 5 mins
+    drawSmallEgg();
+    drawBigEgg();
+  }
+  u8g2.clearBuffer();
+  u8g2.drawStr(10,41,"HATCHED UWU");
+  u8g2.sendBuffer();
 }
 
 void loop() {
-  //fade in and out mech key led
-  #ifdef mech_key
-  if(digitalRead(button) == true) {
-    pixel.setPixelColor(0,pixel.Color(255,0,255));
-    pixel.show();
-    u8g2.clearBuffer();
-    u8g2.drawStr(10,50,"PORPL");
-    u8g2.sendBuffer();
-  } else {
-    while(digitalRead(button) == false) {
-      color = color+fadeInterval;
-      pixel.setPixelColor(0,pixel.Color(color,color,color));
-      pixel.show();
-      u8g2.clearBuffer();
-      u8g2.drawStr(10,50,"Hello World color");
-      u8g2.sendBuffer();
-      if (color <=0 || color>=255) {
-        fadeInterval = -fadeInterval;
-      }
-      delay(fadeSpeed);
-    }
-  }
-  #endif
+  
 }
