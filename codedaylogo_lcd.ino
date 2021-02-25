@@ -6,6 +6,9 @@
 
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R2, SCL, SDA, U8X8_PIN_NONE);  // High speed I2C
 
+
+// To generate your own bitmap from an image, check out this tutorial:
+// https://sandhansblog.wordpress.com/2017/04/16/interfacing-displaying-a-custom-graphic-on-an-0-96-i2c-oled/
 #define codeday_width 65
 #define codeday_height 64
 static const unsigned char codeday_bits[] PROGMEM = {
