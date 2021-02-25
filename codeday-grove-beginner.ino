@@ -1,5 +1,5 @@
 //#--------------------------------------------------------------------------------------#
-//| Thanks to Digikey for providing the kits and helping us make this an amazing Codeday!|
+//| Thanks to Digikey for providing the kits and helping us make this an amazing CodeDay!|
 //#--------------------------------------------------------------------------------------#
 
 #include <U8g2lib.h> //Library for the screen

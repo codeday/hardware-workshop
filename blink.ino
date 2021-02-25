@@ -1,5 +1,5 @@
 //#--------------------------------------------------------------------------------------#
-//| Thanks to Digikey for providing the kits and helping us make this an amazing Codeday!|
+//| Thanks to Digikey for providing the kits and helping us make this an amazing CodeDay!|
 //#--------------------------------------------------------------------------------------#
 
 void setup() {
