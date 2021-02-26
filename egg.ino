@@ -85,20 +85,12 @@ U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* clock=*/ SCL, /* data=*/ SD
 void drawSmallEgg(){
   u8g2.clearBuffer(); //Clears the screen
   u8g2.drawCircle(63,31,20); //sad excuse for an egg but works
-  u8g2.drawLine(0,0,0,63); //Makes a square around the screen
-  u8g2.drawLine(0,0,127,0);
-  u8g2.drawLine(127,0,127,63);
-  u8g2.drawLine(0,63,127,63);
   u8g2.sendBuffer(); //Sends image to the screen
   delay(750);
 }
 void drawBigEgg() {
   u8g2.clearBuffer(); //Clears the screen
   u8g2.drawCircle(63,31,15); //sad excuse for an egg but works
-  u8g2.drawLine(0,0,0,63); //Makes a square around the screen
-  u8g2.drawLine(0,0,127,0);
-  u8g2.drawLine(127,0,127,63);
-  u8g2.drawLine(0,63,127,63);
   u8g2.sendBuffer(); //Sends image to screen
   delay(750);
 }
@@ -122,13 +114,14 @@ void setup() {
     u8g2.sendBuffer();
   }
   millis_since_press = millis();
-  while (millis() - millis_since_press <= 300000) { //checks if hatching time is less than 5 mins
+  while (millis() - millis_since_press <= 300000) { //checks if hatching time is less than 5 mins, if its more than 5 the loop ends and the Jojigotchi hatches
     drawSmallEgg();
     drawBigEgg();
   }
 }
 
 void loop(void) {
+  //Shows different OwO faces every 10s
   u8g2.firstPage();
   do {
     drawOwO1();
